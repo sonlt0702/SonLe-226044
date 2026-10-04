@@ -1,117 +1,60 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <math.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 void main()
 {
-	// vòng lặp for, lặp với số lần biết trước
+	// btvn
+	// BT1:
+	// Tìm ước chung lớn nhất (GCD)
+	// Nhập hai số nguyên dương A và B, sử dụng vòng lặp để tìm ƯCLN của hai số.
+	// Không sử dụng hàm có sẵn.
+	int a = 0;
+	int b = 0;
+	printf("Nhap a: "); scanf("%d", &a);
+	printf("Nhap b: "); scanf("%d", &b);
 
-	// cú pháp
-	int tong = 0;
-	for (int i = 1; i <= 10; i++)
+	int min = a > b ? b : a;
+
+	for (int i = min; i > 0; i--)
 	{
-		tong = tong + i;
-	}
-	printf("tong: %d \n", tong);
-
-	// vòng lặp while, lặp với số lần chưa biết trước
-
-	// cú pháp
-	int j = 0;
-	int k = 0;
-	while (k != j)
-	{
-		printf("nhap gia tri k bang j: ");
-		scanf("%d", &k);
-	}
-
-	// vòng lặp do...while
-
-	// cú pháp
-	int j = 28;
-	int k = 28;
-	do 
-	{
-		printf("nhap gia tri k bang j: ");
-		scanf("%d", &k);
-
-	} while (k != j);
-
-	// bài tập
-	// dùng vòng lặp in ra bảng cửu chương 2-9, bỏ 4
-
-	for (int j = 2; j <= 9; j++) 
-	{
-		if (j == 4) continue;
-		printf("Bang cuu chuong %d \n", j);
-		for (int i = 1; i <= 10; i++)
-		{
-			printf("%d x %d = %d \n",j, i, j * i);
-		}
-	}
-
-	// bt2 Nhập vào số nguyên n từ bàn phím
-	// tính và in ra kết quả giai thừa của n (1*2*3...*n)
-	int n = 0;
-	int gt = 1;
-	printf("Nhap n: ");
-	scanf("%d", &n);
-	for (int i = 1; i <= n; i++)
-	{
-		gt = gt * i; // gt = 1*2*3*...*n
-	}
-	printf("giai thua cua %d la: %d \n", n, gt);
-
-	// bt3 Nhập vào số nguyên n từ bàn phím
-	// kiểm tra xem số đó có phải là số nguyên tố hay không
-	// nếu đúng thì in ra n là số nguyên tố
-	// nếu sai thì in ra n không phải la số nguyên tố
-	// 
-	// b1 nhập n
-	// b2 khởi tạo isSnt = 1
-	// b3 dùng vòng lặp for kiểm tra từ 2 đến n, 
-	// nếu có bất kì giá trị nào mà n chia hết cho số đó thì gán biến isSnt = 0, break loop
-	// b4 sau khi kết thúc vòng lặp, kiểm tra lại biến isSnt nếu vẫn là 1 thì n là snt
-	// nếu isSnt là 0 thì n không phải là snt
-
-	int n = 0;
-	printf("Nhap n: ");
-	scanf("%d", &n);
-
-	int isSnt = 1;
-	for(int i =2; i < n;i++)
-	{
-		if (n % i == 0) {
-			isSnt = 0;
+		if ((a % i == 0 && b % i == 0) || i == 1) {
+			printf("UCLN: %d \n", i);
 			break;
 		}
 	}
-	if (isSnt) {
-		printf("%d la so nguyen to \n", n);
-	}
-	else {
-		printf("%d khong phai la so nguyen to \n", n);
-	}
 
-	// bt4 Nhập vào số nguyên n, đếm số lượng chữ số của n và in ra màn hình
-	// vd: 97421 -> n có 5 chữ số
-	// gợi ý: dùng vòng lặp while kết hợp chia nguyên cho 10 để đếm
+	// BT2: Trò chơi đoán số
+	// Chương trình sinh ra một số bí mật trong khoảng 1–100. Người dùng liên tục nhập số dự đoán cho đến khi đoán đúng. Sau mỗi lần nhập:
+    // Nếu số nhập nhỏ hơn số bí mật → thông báo "Lon hon"
+	// Nếu số nhập lớn hơn → thông báo "Nho hon"
+	// Nếu đúng → thông báo số lần đoán.
+	// 
 
-	int n = 0;
-	printf("Nhap n: ");
-	scanf("%d", &n);
-	int t = n;
+	srand(time(NULL));
 
+	int sbm = rand() % 100 + 1;
 	int count = 0;
+	int n = 0;
 
-	if (n == 0) count = 1;
-
-	while (n > 0)
-	{
-		n = n / 10;
+	do {
 		count++;
-	}
+		printf("nhap so ban doan: ");
+		scanf("%d", &n);
+		if (n > sbm)
+		{
+			printf("ban da nhap so lon hon so bi mat \n");
+		}
+		else if (n < sbm)
+		{
+			printf("ban da nhap so nho hon so bi mat \n");
+		}
+		else
+		{
+			printf("chuc mung ban da nhap dung sau %d lan \n", count);
+		}
+	} while (n != sbm);
 
-	printf("%d co %d chu so \n", t, count);
 }

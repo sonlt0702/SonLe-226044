@@ -3,57 +3,70 @@
 #include <math.h>
 #include "lib.h"
 
-// Mảng
-// - mảng là tập hợp các biến có cùng kiểu dữ liệu
-// - cú pháp: <kiểu dữ liệu> tên_mảng[<số lượng phần tử>] = {<giá trị khởi tạo ban đầu>};
-// - chú ý: số phần tử trong mảng phải là 1 con số, không được là biến
-// - sử dụng: truy cập vào phần tử thông qua index(bắt đầu từ 0)
-// ta sẽ có các biến arr[0], arr[1], ...
-
 void main()
 {
-	int arr[10] = { 3,2,5,6,5,6,2,1,12,32};
+	//### ** Bài 1.4: Đếm phân loại phần tử * *
 
-	//int tong = 0;
-	//for (int i = 0; i < 5; i++) {
-	//	tong += arr[i];
-	//}
-	//printf("tong: %d \n", tong);
+	//	-**Yêu cầu : **Duyệt mảng và đếm xem có bao nhiêu số chẵn và bao nhiêu số lẻ.
+	//	- **Đầu vào : **Số nguyên n và n phần tử của mảng.
+	//	- **Đầu ra : **2 số nguyên tương ứng với số lượng phần tử chẵn và lẻ.
 
-	// in ra giá trị min, max và vị trí tương ứng của nó trong mảng arr
-	int min = arr[0];
-	int max = arr[0];
-	int vi_tri_min = 0;
-	int vi_tri_max = 0;
+	//	Input : 6 | 3 4 7 3 1 2
 
-	for (int i = 0;i < 10;i++)
+	//	Output : Chan : 2, Le : 4
+
+	int arr1[] = { 3, 4, 7, 3, 1, 2 };
+
+	int count_chan = 0;
+	int count_le = 0;
+
+	int lenght_arr1 = sizeof(arr1) / sizeof(arr1[0]);
+
+	for (int i = 0; i < lenght_arr1; i++)
 	{
-		if (arr[i] > max)
+		if (arr1[i] % 2 == 0)
 		{
-			max = arr[i];
-			vi_tri_max = i;
+			count_chan++;
 		}
-
-		if (arr[i] < min)
+		else
 		{
-			min = arr[i];
-			vi_tri_min = i;
+			count_le++;
 		}
 	}
 
-	printf("max: %d, vi tri max: %d \n", max, vi_tri_max);
-	printf("min: %d, vi tri min: %d \n", min, vi_tri_min);
+	printf("so phan tu chan: %d \n", count_chan);
+	printf("so phan tu le: %d \n", count_le);
 
-	int arr1[] = { 1,2,3,4,5,6,7,8,9 };
 
-	int length = sizeof(arr1) / sizeof(arr1[0]);
+	//### ** Bài 1.5: Tìm kiếm vị trí phần tử * *
 
-	for (int j = 0; j < length; j++)
+	//	-**Yêu cầu : **Nhập thêm một số nguyên x.
+	// Tìm và in ra vị trí(index) cuối cùng mà x xuất hiện trong mảng.
+	// Nếu x không tồn tại, in ra - 1. 
+	// Giả sử mảng bắt đầu từ index 0.
+	//	- **Đầu vào : **Số nguyên n, n phần tử của mảng và số x.
+	//	- **Đầu ra : **Vị trí index cuối cùng của x.
+
+	//	Input : 6 | 1 5 3 5 2 5 | x = 5
+
+	//	Output : 5 (vì số 5 xuất hiện lần cuối ở vị trí index 5)
+
+	int arr2[] = { 1, 5, 3, 5, 2, 5 };
+	int x = 5;
+
+	int vi_tri = -1;
+	int length_arr2 = sizeof(arr2) / sizeof(arr2[0]);
+	for (int i = 0; i < length_arr2; i++)
 	{
-		printf("j[%d]: %d \n", j, arr1[j]);
+		if (arr2[i] == x)
+		{
+			vi_tri = i;
+			//break;
+		}
 	}
 
-	char t = 'a';
-	sizeof(t);
+	printf("vi tri cua x: %d \n", vi_tri);
+
+
 }
 

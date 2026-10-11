@@ -33,3 +33,39 @@ int tim_bcnn(int a, int b)
 		}
 	}
 }
+
+int str_len(char* str)
+{
+	int count = 0;
+	while (*str != 0)
+	{
+		count++;
+		str++;
+	}
+
+	return count;
+}
+
+int arr_sum(int* arr, int len)
+{
+	int sum = 0;
+	// logic
+	for (int i = 0; i < len; i++)
+	{
+		sum += arr[i];
+	}
+	return sum;
+
+}
+
+void str_upper(char* str)
+{
+	while (*str != 0)
+	{
+		if (*str >= 'a' && *str <= 'z')
+		{
+			*str = *str - 32;
+		}
+		str++;
+	}
+}

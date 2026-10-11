@@ -3,52 +3,63 @@
 #include <math.h>
 #include "lib.h"
 
-int tim_vi_tri_phan_tu(int* arr, int length, int value)
-{
-
-	int vi_tri = -1;
-	for (int i = 0; i < length; i++)
-	{
-		if (arr[i] == value)
-		{
-			vi_tri = i;
-			//break;
-		}
-	}
-
-	return vi_tri;
-}
 
 void main()
 {
-	int x = 0x12345678;
+	// String trong C chính là 1 mảng kí tự char kết thúc bằng 
+	// ký tự đặc biệt '\0'
 
-	short* px = &x;
+	// kí tự được lưu trong bộ nhớ máy tính như thế nào?
+	// + được lưu theo bảng mã ASCII
+	// VD: 'a' trong bảng mã ASCII là 97, 'b' là 98
+	// sử dụng 1 byte để lưu kí tự, chứa trong cặp nháy đơn ''
+	// cú pháp khai báo:
+	//char str[6] = { 'h', 'e', 'l', 'l', 'o', 0 };
+	//char str1[] = { 'h', 'e', 'l', 'l', 'o', 0 };
+	// ngắn gọn hơn
+	//char str2[] = "hello";
+	// ngoài ra trong ngôn ngữ C, khi chứa string trong cặp dấu nháy
+	// kép "" thì nó sẽ trả về địa chỉ của string đó
+	//printf("string: %s \n", "hello");
+	// suy ra ta có cách khai báo thứ 2 của string: dùng con trỏ để
+	// chứa địa chỉ bắt đầu của string
+	//char* str3 = "hello"; // str3 là hằng số
+	//printf("string: %s \n", str3);
+	// tuy nhiên, cần lưu ý khi khai báo string bằng con trỏ thì string
+	// đó là hằng số và không thể thay đổi giá trị
+	//str2[4] = 'y';
+	//printf("string 1: %s \n", str2);
 
-	printf("gia tri cua bien x: %x \n", *(px + 1));
+	//str3[4] = 'y'; // không thể ghi giá trị vào hằng số
+	//printf("string 3: %s \n", str3);
 
-	*px = 0x55;
-	*(px + 1) = 0x77;
-	printf("gia tri cua bien x lan 2: %x \n", x);
+	//Bài tập
 
-	short x = 0x1234;
+	// bt1: viết hàm str_len nhận vào 1 string và trả ra độ dài
+	// của string đó
 
-	char* px = &x;
+	char str1[] = "lap trinh CCpp";
 
-	printf("byte thap: %x \n", *px);
-	printf("byte cao: %x \n", *(px+1));
+	int len_str1 = str_len(str1);
 
-	int arr[] = { 1,2,3,4,5,6 };
+	printf("str1 length: %d \n", len_str1); // expected 14
 
-	int* px;
-	px = arr;
-	printf("px : %x, \n", px);
-	printf("gia tri px : %d, \n", *(px+2));
+	// bt2: viết hàm arr_sum nhận vào 1 mảng số nguyên và kích thước
+	// của mảng, hàm trả về tổng các phần tử trong mảng
 
-	for (int i = 0; i < 6; i++)
-	{
-		printf("arr[%d]: %d \n", i, *(arr+i)); // tương đương arr[i]
-	}
+	int arr[] = { 1,2,3,4,5 };
+	int len = sizeof(arr) / sizeof(arr[0]);
+	int sum = arr_sum(arr, len);
+	printf("sum arr: %d \n", sum); // expected 15
+
+	// bt3: viết hàm str_upper nhận vào 1 chuỗi string
+	// và chuyển toàn bộ chuỗi đó thành chuỗi in hoa
+	// gợi ý: kiểm tra kí tự từ a-z nếu đúng thì trừ đi 32
+	char str2[] = "lap trinh CCpp";
+
+	str_upper(str2);
+
+	printf("str2 upper: %s \n", str2); // "LAP TRINH CCPP"
 
 }
 

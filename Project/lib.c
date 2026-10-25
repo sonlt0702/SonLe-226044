@@ -1,5 +1,6 @@
 #include "lib.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 char kiem_tra_so_nguyen_to(int n)
 {
@@ -225,7 +226,22 @@ char* str_concat(char* str3, char* str4)
 	//char str3[] = "hello";
 	//char str4[] = " world!";
 
-	char str5[1000] = { 0 };
+	int n = 0;
+	char* p = str3;
+	char* q = str4;
+	while (*p != '\0')
+	{
+		n++;
+		p++;
+	}
+	while (*q != '\0')
+	{
+		n++;
+		q++;
+	}
+
+	//char str5[1000] = { 0 };
+	char* str5 = calloc(n+1, 1);
 
 	int i = 0;
 	while (*str3 != '\0')

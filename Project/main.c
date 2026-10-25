@@ -6,60 +6,70 @@
 
 void main()
 {
-	// String trong C chính là 1 mảng kí tự char kết thúc bằng 
-	// ký tự đặc biệt '\0'
+	// 2. Hoán đổi hai số bằng con trỏ:
+	// Viết hàm swap() nhận hai con trỏ đến số nguyên và hoán đổi giá trị của hai biến.
+	int a = 5;
+	int b = 10;
+	printf("truoc: a: %d, b: %d \n", a, b);
+	swap(&a, &b);
+	printf("sau: a: %d, b: %d \n", a, b);
 
-	// kí tự được lưu trong bộ nhớ máy tính như thế nào?
-	// + được lưu theo bảng mã ASCII
-	// VD: 'a' trong bảng mã ASCII là 97, 'b' là 98
-	// sử dụng 1 byte để lưu kí tự, chứa trong cặp nháy đơn ''
-	// cú pháp khai báo:
-	//char str[6] = { 'h', 'e', 'l', 'l', 'o', 0 };
-	//char str1[] = { 'h', 'e', 'l', 'l', 'o', 0 };
-	// ngắn gọn hơn
-	//char str2[] = "hello";
-	// ngoài ra trong ngôn ngữ C, khi chứa string trong cặp dấu nháy
-	// kép "" thì nó sẽ trả về địa chỉ của string đó
-	//printf("string: %s \n", "hello");
-	// suy ra ta có cách khai báo thứ 2 của string: dùng con trỏ để
-	// chứa địa chỉ bắt đầu của string
-	//char* str3 = "hello"; // str3 là hằng số
-	//printf("string: %s \n", str3);
-	// tuy nhiên, cần lưu ý khi khai báo string bằng con trỏ thì string
-	// đó là hằng số và không thể thay đổi giá trị
-	//str2[4] = 'y';
-	//printf("string 1: %s \n", str2);
-
-	//str3[4] = 'y'; // không thể ghi giá trị vào hằng số
-	//printf("string 3: %s \n", str3);
-
-	//Bài tập
-
-	// bt1: viết hàm str_len nhận vào 1 string và trả ra độ dài
-	// của string đó
-
-	char str1[] = "lap trinh CCpp";
-
-	int len_str1 = str_len(str1);
-
-	printf("str1 length: %d \n", len_str1); // expected 14
-
-	// bt2: viết hàm arr_sum nhận vào 1 mảng số nguyên và kích thước
-	// của mảng, hàm trả về tổng các phần tử trong mảng
-
-	int arr[] = { 1,2,3,4,5 };
+	// 4. Sắp xếp phần tử trong mảng: Cho mảng gồm n số nguyên. 
+	// Viết các hàm sắp xếp các phần tử trong mảng theo thứ tự tang dần.
+	int arr[] = { 2,4,3,7,4,6,1,9 };
 	int len = sizeof(arr) / sizeof(arr[0]);
-	int sum = arr_sum(arr, len);
-	printf("sum arr: %d \n", sum); // expected 15
+	arr_print(arr, len);
 
-	// bt3: viết hàm str_upper nhận vào 1 chuỗi string
-	// và chuyển toàn bộ chuỗi đó thành chuỗi in hoa
-	// gợi ý: kiểm tra kí tự từ a-z nếu đúng thì trừ đi 32
-	char str2[] = "lap trinh CCpp";
+	arr_sort(arr, len);
 
-	str_upper(str2);
+	arr_print(arr, len);
 
-	printf("str2 upper: %s \n", str2); // "LAP TRINH CCPP"
+	// 6. Chuẩn hóa chuỗi họ tên: Viết hàm xóa khoảng trắng thừa ở đầu, cuối và giữa các từ;
+	// viết hoa chữ cái đầu mỗi từ và viết thường các chữ cái còn lại.
+	// Chỉ yêu cầu xử lý chuỗi tiếng Anh không dấu.
 
+	char str[] = "  le  thAnh    soN  ";
+
+	str_format_name(str);
+
+	printf("Sau: %s \n", str); // "Le Thanh Son"
+
+	// 9. Kiểm tra chuỗi B có xuất hiện trong chuỗi A hay không bằng con trỏ.
+
+	char str1[] = "hello world";
+	char str2[] = "ld";
+
+	int isExists = str_find_str(str1, str2);
+	if (isExists)
+	{
+		printf("chuoi 2 co nam trong chuoi 1 \n");
+	}
+	else
+	{
+		printf("chuoi 2 khong nam trong chuoi 1 \n");
+	}
+
+	// 10: Bài toán thực tế - Trích xuất tên miền (Domain) từ Email
+	//**Yêu cầu:** Cho một chuỗi chứa địa chỉ email,
+	// hãy tách lấy phần username (trước ký tự @) và phần domain (sau ký tự @) 
+	// lưu vào 2 mảng khác nhau.
+
+	char* email = "admin@binance.com";
+	char username[100] = { 0 };
+	char domain[100] = { 0 };
+
+	boc_tach_email(email, username, domain);
+
+	printf("Email goc: %s\n", email);
+	printf("Username: %s\n", username); // Ket qua: admin
+	printf("Domain: %s\n", domain);     // Ket qua: binance.com
+
+	// 8. Viết hàm nối hai chuỗi sử dụng con trỏ.
+	char str3[] = "hello";
+	char str4[] = " world!";
+
+	char* str5 = str_concat(str3, str4);
+
+	printf("Bai 8: %s \n", str5); // hello world!
 }
 

@@ -258,3 +258,79 @@ char* str_concat(char* str3, char* str4)
 	}
 	return str5;
 }
+
+void in_thong_tin_hoc_sinh(hoc_sinh_t hs)
+{
+	char* convert_gt[] = { "Nam", "Nu" };
+	char* convert_xl[] = { "Chua xep loai", "Gioi", "Kha", "Trung Binh", "Yeu" };
+
+	printf("ten: %s, tuoi: %d, gioi tinh: %s, diem toan: %.1f, diem van: %.1f, xep loai: %s \n",
+		hs.ten, 
+		hs.tuoi, 
+		convert_gt[hs.gt],
+		hs.diemtoan,
+		hs.diemvan,
+		convert_xl[hs.loai]
+	);
+}
+
+float tinh_diem_trung_binh(hoc_sinh_t hs)
+{
+	char* convert_gt[] = { "NAM", "NU" };
+	float dtb = (hs.diemtoan + hs.diemvan) / 2;
+	return dtb;
+}
+
+int tim_hoc_sinh_gioi_toan_nhat(hoc_sinh_t* arr, int len)
+{
+	int vi_tri = 0;
+	float dt_max = arr[0].diemtoan;
+	for (int i = 1; i < len; i++)
+	{
+		if (arr[i].diemtoan > dt_max)
+		{
+			dt_max = arr[i].diemtoan;
+			vi_tri = i;
+		}
+	}
+	return vi_tri;
+}
+
+int tim_hoc_sinh_diem_tb_cao_nhat(hoc_sinh_t* arr, int len)
+{
+	int vi_tri = 0;
+	float dtb_max = tinh_diem_trung_binh(arr[0]);
+	for (int i = 1; i < len; i++)
+	{
+		if (tinh_diem_trung_binh(arr[i]) > dtb_max)
+		{
+			dtb_max = tinh_diem_trung_binh(arr[i]);
+			vi_tri = i;
+		}
+	}
+	return vi_tri;
+}
+
+void xep_loai_toan_bo_hs(hoc_sinh_t* arr, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		float dtb = tinh_diem_trung_binh(arr[i]);
+		if (dtb >= 8.0)
+		{
+			arr[i].loai = GIOI;
+		}
+		else if (dtb >= 6.5)
+		{
+			arr[i].loai = KHA;
+		}
+		else if (dtb >= 5.0)
+		{
+			arr[i].loai = TRUNGBINH;
+		}
+		else
+		{
+			arr[i].loai = YEU;
+		}
+	}
+}

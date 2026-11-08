@@ -4,114 +4,121 @@
 #include <math.h>
 #include "lib.h"
 
-// struct là một kiểu cấu trúc dữ liệu,
-// cho phép nhóm nhiều thành viên dữ liệu vào dùng 1 đối tượng
+// linked list là 1 dạng của mảng động, 
+// cho phép lưu trữ giá trị ở các ô nhớ không liên tiếp
+// và có thể tăng giảm tùy ý
 
-// typedef dùng để tạo tên khác cho 1 kiểu dữ liệu đã có
-
-// UNION
-// union là một kiểu dữ liệu do người dùng tự định nghĩa (tương tự struct)
-// cho phép lưu trữ nhiều thành viên có các kiểu dữ liệu khác nhau tại cùng 1 vùng nhớ
+// giả sử 
+// đối tượng 1 có giá trị là A tại vùng nhớ 0x1000 và vùng nhớ của đối tượng 2 là 0x1007
+// suy ra đối tượng 1 cần 2 biến: value lưu giá trị A, next_node lưu địa chỉ của đối tượng 2
+// đối tượng 2 có giá trị là B tại vùng nhớ 0x1007
+// suy ra đối tượng 2 cần 2 biến: value lưu giá trị B, next_node lưu địa chỉ của đối tượng 3
+// đối tượng 3 có giá trị là C tại vùng nhớ 0x1013
+// suy ra đối tượng 3 cần 2 biến: value lưu giá trị C, next_node lưu địa chỉ của đối tượng 4
+// đối tượng 4 có giá trị là D tại vùng nhớ 0x1005
+// suy ra đối tượng 4 cần 2 biến: value lưu giá trị D, next_node lưu địa chỉ của đối tượng 5
+// (nếu không có thì lưu NULL)
 
 typedef struct {
-	short a;
-	char x;
-	char y;
-} struct_t;
+	int value; // giá trị của node
+	void* next_node; // địa chỉ của node tiếp theo
+} node;
 
-typedef union {
-	unsigned short a;
-	char arr[];
-} union_t;
+typedef struct {
+	node* root_node; // địa chỉ của node đầu tiên
+	int size; // số lượng node
+} linked_list;
 
-typedef union {
+void linked_list_init(linked_list* ll)
+{
+	ll->root_node = NULL;
+	ll->size = 0;
+}
 
-	unsigned char value;
+void linked_list_add_node(linked_list* ll, int val)
+{
+	node* n = malloc(sizeof(node));
+	n->value = val;
+	n->next_node = NULL;
 
-	struct {
-		char _0 : 1;
-		char _1 : 1;
-		char _2 : 1;
-		char _3 : 1;
-		char _4 : 1;
-		char _5 : 1;
-		char _6 : 1;
-		char _7 : 1;
-	} BIT;
-} byte_t;
+	if (ll->root_node == NULL)
+	{
+		ll->root_node = n;
+	}
+	else
+	{
+		node* temp = ll->root_node;
+		//for (int i = 0; i < ll->size - 1;i++)
+		//{
+		//	temp = (node*)(temp->next_node);
+		//}
+		while (temp->next_node != NULL)
+		{
+			temp = (node*)(temp->next_node);
+		}
+		temp->next_node = n;
+	}
+	ll->size++;
 
+}
+
+void linked_list_show_all_node(linked_list* ll)
+{
+	node* temp = ll->root_node;
+	int i = 0;
+	while (temp->next_node != NULL)
+	{
+		printf("Gia tri cua node tai vi tri %d la: %d \n", i, temp->value);
+		temp = (node*)(temp->next_node);
+		i++;
+	}
+	printf("Gia tri cua node tai vi tri %d la: %d \n", i, temp->value);
+}
+
+int linked_list_get_value(linked_list* ll, int index)
+{
+	node* temp = ll->root_node;
+	for (int i = 0; i < index - 1; i++)
+	{
+		temp = (node*)(temp->next_node);
+	}
+	return temp->value;
+}
+
+/**
+* @brief Hàm xóa 1 node trong linked list
+* @param (linked_list*): địa chỉ của linked list
+* @param (int): vị trí của node cần xóa
+*/
+void linked_list_remove_node(linked_list* ll, int index);
+
+/**
+* @brief Hàm insert 1 node vào linked list tại ví trí bất kì
+* @param (linked_list*): địa chỉ của linked list
+* @param (int): vị trí của node cần insert
+* @param (int): giá trị của node cần insert
+*/
+void linked_list_insert_node(linked_list* ll, int index, int val);
 
 void main()
 {
-	hoc_sinh_t hs1 = { "An", 16, NAM, 8.5, 7.3 , KHA}; 
 
-	//in_thong_tin_hoc_sinh(hs1);
-	// viết hàm tính và trả ra điểm trung bình của 1 học sinh (điểm toán + điểm văn)/2
-	float dtb = tinh_diem_trung_binh(hs1);
-	printf("diem trung binh: %.1f \n", dtb);
+	linked_list l; 
+	linked_list_init(&l);
+	linked_list_add_node(&l, 10);
+	linked_list_add_node(&l, 20);
+	linked_list_add_node(&l, 30);
+	linked_list_add_node(&l, 40);
+	linked_list_add_node(&l, 50);
 
-	
-	// khai báo mảng bao gồm 5 phần tử hoc_sinh_t, khởi tạo giá trị ban đầu cho nó
-	// bt1: viết hàm tìm học sinh giỏi toán nhất và in thông tin học sinh đó ra
-	// bt2: viết hàm tìm học sinh có điểm trung bình cao nhất và in thông tin của học sinh đó ra
+	linked_list_show_all_node(&l);
 
-	hoc_sinh_t arr[] = {
-		{ "An", 16, NAM, 8, 7.3 },
-		{ "Binh", 16, NAM, 5, 4 },
-		{ "Khoa", 16, NAM, 6, 5 },
-		{ "Lan", 16, NU, 9, 7.5 },
-		{ "Ngoc", 16, NU, 9.5, 6.0 }
-	};
-	int len = sizeof(arr) / sizeof(arr[0]);
-	int vi_tri_hs_gioi_toan = tim_hoc_sinh_gioi_toan_nhat(arr, sizeof(arr) / sizeof(arr[0]));
-	//in_thong_tin_hoc_sinh(arr[vi_tri_hs_gioi_toan]);
+	int val = linked_list_get_value(&l, 3);
+	printf("val node 3: %d \n", val);
 
-	int vi_tri_hs_diem_tb_cao_nhat = tim_hoc_sinh_diem_tb_cao_nhat(arr, sizeof(arr) / sizeof(arr[0]));
-	//in_thong_tin_hoc_sinh(arr[vi_tri_hs_diem_tb_cao_nhat]);
+	// BTVN
+	// 1. viết hàm xóa 1 node trong linked_list tại vị trí mong muốn
+	// 2. viết hàm thêm 1 node vào linked_list tại vị trí mong muốn
 
-	//bt:
-	// viết hàm xếp loại toàn bộ học sinh trong mảng
-	// dựa vào điểm trung bình để xếp loại: 
-	// >= 8.0		   :	Giỏi
-	// >= 6.5 && < 8.0 :	Khá
-	// >= 5.0 && < 6.5 :	Trung bình
-	// < 5.0		   :	Yếu
-	for (int i = 0; i < len; i++)
-	{
-		in_thong_tin_hoc_sinh(arr[i]);
-	}
-	printf("\n");
-
-	xep_loai_toan_bo_hs(arr, len);
-
-	for (int i = 0; i < len; i++)
-	{
-		in_thong_tin_hoc_sinh(arr[i]);
-	}
-
-	struct_t s = {1,2,3};
-	printf("kich thuoc s: %d byte \n", sizeof(s));
-
-	union_t u;
-	u.a = 0x1234;
-	printf("kich thuoc s: %d byte \n", sizeof(u));
-
-	unsigned short x = 0x1234;
-	char* px = &x;
-
-	char low = u.arr[0];
-	char high = u.arr[1];
-
-	printf("low: %x \n", low);
-	printf("high: %x \n", high);
-
-	byte_t a;
-	a.value = 0;
-	a.BIT._1 = 1;
-	a.BIT._3 = 1;
-	a.BIT._5 = 1;
-	a.BIT._7 = 1;
-
-	printf("a.value: %d \n", a.value);
 }
 

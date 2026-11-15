@@ -4,179 +4,106 @@
 #include <math.h>
 #include "lib.h"
 
-// linked list là 1 dạng của mảng động, 
-// cho phép lưu trữ giá trị ở các ô nhớ không liên tiếp
-// và có thể tăng giảm tùy ý
+// quy trình làm việc với file, sử dụng thư viện <stdio.h>
+// 1. khai báo con trỏ file: FILE* fp;
+// 2. mở file: Dùng hàm fopen("file name", "mode")
+// mode "r" -> mở để đọc
+// mode "w" -> mở để ghi
+// mode "a" -> mở để ghi nối tiếp
+// 3. thao tác đọc/ghi dữ liệu: 
+// dùng các hàm tương ứng (fgetc, fgets, fscanf, fputc, fputs, fprintf)
+// 4. đóng file: dùng hàm fclose()
 
-// giả sử 
-// đối tượng 1 có giá trị là A tại vùng nhớ 0x1000 và vùng nhớ của đối tượng 2 là 0x1007
-// suy ra đối tượng 1 cần 2 biến: value lưu giá trị A, next_node lưu địa chỉ của đối tượng 2
-// đối tượng 2 có giá trị là B tại vùng nhớ 0x1007
-// suy ra đối tượng 2 cần 2 biến: value lưu giá trị B, next_node lưu địa chỉ của đối tượng 3
-// đối tượng 3 có giá trị là C tại vùng nhớ 0x1013
-// suy ra đối tượng 3 cần 2 biến: value lưu giá trị C, next_node lưu địa chỉ của đối tượng 4
-// đối tượng 4 có giá trị là D tại vùng nhớ 0x1005
-// suy ra đối tượng 4 cần 2 biến: value lưu giá trị D, next_node lưu địa chỉ của đối tượng 5
-// (nếu không có thì lưu NULL)
-
-// 1 -> 2 -> 3 -> 4
-
-typedef struct {
-	int value; // giá trị của node
-	void* next_node; // địa chỉ của node tiếp theo
-} node;
-
-typedef struct {
-	node* root_node; // địa chỉ của node đầu tiên
-	int size; // số lượng node
-} linked_list;
-
-void linked_list_init(linked_list* ll)
-{
-	ll->root_node = NULL;
-	ll->size = 0;
-}
-
-void linked_list_add_node(linked_list* ll, int val)
-{
-	node* n = malloc(sizeof(node));
-	n->value = val;
-	n->next_node = NULL;
-
-	if (ll->root_node == NULL)
-	{
-		ll->root_node = n;
-	}
-	else
-	{
-		node* temp = ll->root_node;
-		//for (int i = 0; i < ll->size - 1;i++)
-		//{
-		//	temp = (node*)(temp->next_node);
-		//}
-		while (temp->next_node != NULL)
-		{
-			temp = (node*)(temp->next_node);
-		}
-		temp->next_node = n;
-	}
-	ll->size++;
-
-}
-
-void linked_list_show_all_node(linked_list* ll)
-{
-	node* temp = ll->root_node;
-	int i = 0;
-	while (temp->next_node != NULL)
-	{
-		printf("Gia tri cua node tai vi tri %d la: %d \n", i, temp->value);
-		temp = (node*)(temp->next_node);
-		i++;
-	}
-	printf("Gia tri cua node tai vi tri %d la: %d \n", i, temp->value);
-}
-
-int linked_list_get_value(linked_list* ll, int index)
-{
-	node* temp = ll->root_node;
-	for (int i = 0; i < index - 1; i++)
-	{
-		temp = (node*)(temp->next_node);
-	}
-	return temp->value;
-}
-
-/**
-* @brief Hàm xóa 1 node trong linked list
-* @param (linked_list*): địa chỉ của linked list
-* @param (int): vị trí của node cần xóa
-*/
-void linked_list_remove_node(linked_list* ll, int index)
-{
-	// 1 -> 2 -> 3 -> 4
-	// 
-	node* temp = ll->root_node;
-
-	if (index == 0)
-	{
-		ll->root_node = temp->next_node;
-		free(temp);
-	}
-	else 
-	{
-		node* pre_temp = ll->root_node;
-		for (int i = 0; i < index; i++)
-		{
-			pre_temp = temp;
-			temp = (node*)(temp->next_node);
-		}
-		pre_temp->next_node = (node*)(temp->next_node);
-		free(temp);
-		ll->size--;
-	}
-}
-
-/**
-* @brief Hàm insert 1 node vào linked list tại ví trí bất kì
-* @param (linked_list*): địa chỉ của linked list
-* @param (int): vị trí của node cần insert
-* @param (int): giá trị của node cần insert
-*/
-void linked_list_insert_node(linked_list* ll, int index, int val)
-{
-	node* n = malloc(sizeof(node));
-	n->value = val;
-	n->next_node = NULL;
-
-	node* temp = ll->root_node;
-	if (index == 0)
-	{
-		n->next_node = temp;
-		ll->root_node = n;
-	}
-	else
-	{
-		node* pre_temp = temp;
-		for (int i = 0; i < index; i++)
-		{
-			pre_temp = temp;
-			temp = (node*)(temp->next_node);
-		}
-		pre_temp->next_node = n;
-		n->next_node = temp;
-	}
-	ll->size++;
-}
 
 void main()
 {
+	//FILE* fp;
+	//fp = fopen("D:\\Teacher\\CC++\\Document\\data.txt", "w");
 
-	linked_list l; 
-	linked_list_init(&l);
-	linked_list_add_node(&l, 10);
-	linked_list_add_node(&l, 20);
-	linked_list_add_node(&l, 30);
-	linked_list_add_node(&l, 40);
-	linked_list_add_node(&l, 50);
+	//if (fp == NULL)
+	//{
+	//	printf("khong mo duoc file \n");
+	//}
+	//else
+	//{
+	//	printf("mo file thanh cong \n");
 
-	linked_list_show_all_node(&l);
+	//	//char c = fgetc(fp);
+	//	//printf("%c, %d\n", c, c);
+	//	//c = fgetc(fp);
 
-	int val = linked_list_get_value(&l, 3);
-	printf("val node 3: %d \n", val);
+	//	//char str[100];
+	//	//fgets(str, 12, fp);
 
-	// BTVN
-	// 1. viết hàm xóa 1 node trong linked_list tại vị trí mong muốn
-	// 2. viết hàm thêm 1 node vào linked_list tại vị trí mong muốn
+	//	//printf("%s \n", str);
 
-	linked_list_remove_node(&l, 2);
+	//	//char str1[100];
+	//	//char str2[100];
+	//	//int n = fscanf(fp, "%s %s", str1, str2);
 
-	linked_list_show_all_node(&l);
+	//	//printf("%s %s \n", str1, str2);
+	//	//printf("n: %d \n", n);
 
-	printf("\n");
-	linked_list_insert_node(&l, 3, 30);
+	//	//n = fscanf(fp, "%s %s", str1, str2);
 
-	linked_list_show_all_node(&l);
+	//	//printf("%s %s \n", str1, str2);
+	//	//printf("n: %d \n", n);
 
+	//	//n = fscanf(fp, "%s %s", str1, str2);
+
+	//	//printf("%s %s \n", str1, str2);
+	//	//printf("n: %d \n", n);
+
+	//	//fputc('c', fp);
+	//	//fputs("diem: 7\n", fp);
+
+	//	//int diem_so = 8;
+	//	//fprintf(fp, "diem: %d", diem_so);
+
+
+	//	fclose(fp);
+	//}
+
+	// VD:
+	// mở và tạo mới 1 file students.txt
+	// ghi dữ liệu sau vào file:
+	// 101 Nguyen_Van_A 8.5
+	// 102 Nguyen_Van_B 9.0
+	// Đọc dữ liệu đã ghi vào file và in ra màn hình console
+	// đóng file
+
+	FILE* fp = fopen("D:\\Teacher\\CC++\\Document\\students.txt", "a");
+
+	if (fp == NULL)
+	{
+		printf("mo file de ghi that bai \n");
+	}
+	else
+	{
+		fprintf(fp, "%d %s %.1f\n", 120, "Nguyen_Van_X", 8.5);
+		fprintf(fp, "%d %s %.1f\n", 121, "Nguyen_Van_Y", 9.0);
+		printf("ghi file thanh cong \n");
+		fclose(fp);
+	}
+
+	fp = fopen("D:\\Teacher\\CC++\\Document\\students.txt", "r");
+
+	if (fp == NULL)
+	{
+		printf("mo file de doc that bai \n");
+	}
+	else
+	{
+		int id;
+		char name[100];
+		float diem;
+		printf("Danh sach sinh vien: \n");
+
+		while (fscanf(fp, "%d %s %f", &id, name, &diem) == 3)
+		{
+			printf("MSSV: %d, ho ten: %s, diem so: %.1f \n", id, name, diem);
+		}
+		fclose(fp);
+	}
 }
 

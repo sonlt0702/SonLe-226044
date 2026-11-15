@@ -19,6 +19,8 @@
 // suy ra đối tượng 4 cần 2 biến: value lưu giá trị D, next_node lưu địa chỉ của đối tượng 5
 // (nếu không có thì lưu NULL)
 
+// 1 -> 2 -> 3 -> 4
+
 typedef struct {
 	int value; // giá trị của node
 	void* next_node; // địa chỉ của node tiếp theo
@@ -90,7 +92,30 @@ int linked_list_get_value(linked_list* ll, int index)
 * @param (linked_list*): địa chỉ của linked list
 * @param (int): vị trí của node cần xóa
 */
-void linked_list_remove_node(linked_list* ll, int index);
+void linked_list_remove_node(linked_list* ll, int index)
+{
+	// 1 -> 2 -> 3 -> 4
+	// 
+	node* temp = ll->root_node;
+
+	if (index == 0)
+	{
+		ll->root_node = temp->next_node;
+		free(temp);
+	}
+	else 
+	{
+		node* pre_temp = ll->root_node;
+		for (int i = 0; i < index; i++)
+		{
+			pre_temp = temp;
+			temp = (node*)(temp->next_node);
+		}
+		pre_temp->next_node = (node*)(temp->next_node);
+		free(temp);
+		ll->size--;
+	}
+}
 
 /**
 * @brief Hàm insert 1 node vào linked list tại ví trí bất kì
@@ -98,7 +123,31 @@ void linked_list_remove_node(linked_list* ll, int index);
 * @param (int): vị trí của node cần insert
 * @param (int): giá trị của node cần insert
 */
-void linked_list_insert_node(linked_list* ll, int index, int val);
+void linked_list_insert_node(linked_list* ll, int index, int val)
+{
+	node* n = malloc(sizeof(node));
+	n->value = val;
+	n->next_node = NULL;
+
+	node* temp = ll->root_node;
+	if (index == 0)
+	{
+		n->next_node = temp;
+		ll->root_node = n;
+	}
+	else
+	{
+		node* pre_temp = temp;
+		for (int i = 0; i < index; i++)
+		{
+			pre_temp = temp;
+			temp = (node*)(temp->next_node);
+		}
+		pre_temp->next_node = n;
+		n->next_node = temp;
+	}
+	ll->size++;
+}
 
 void main()
 {
@@ -119,6 +168,15 @@ void main()
 	// BTVN
 	// 1. viết hàm xóa 1 node trong linked_list tại vị trí mong muốn
 	// 2. viết hàm thêm 1 node vào linked_list tại vị trí mong muốn
+
+	linked_list_remove_node(&l, 2);
+
+	linked_list_show_all_node(&l);
+
+	printf("\n");
+	linked_list_insert_node(&l, 3, 30);
+
+	linked_list_show_all_node(&l);
 
 }
 
